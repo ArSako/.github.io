@@ -131,6 +131,7 @@
 </template>
 
 <script>
+//const utils = require('@/utils/helpers')
 export default {
   name: "Calculator",
   data: function () {
@@ -194,6 +195,7 @@ export default {
   border-radius: 1px
   font-size: 4px
   background: linear-gradient(0deg, #4EA4DC -416%, #2BAFDE 401%)
+  transition: .3s
 
   &_wrapper
     padding: 1px
@@ -226,6 +228,9 @@ export default {
   > img
     width: 100%
     height: 100%
+
+.button:hover
+  background: linear-gradient(180deg, #4EA4DC 51.6%, #081925 131.2%)
 
 .scale_0_5
   transform: scale(0.5)
