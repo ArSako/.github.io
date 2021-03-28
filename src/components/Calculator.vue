@@ -3,11 +3,13 @@
     <div class="calculator">
       <div class="calculator_body">
         <div class="calculator_screen_wrapper">
-          <div class="calculator_screen"></div>
+          <div class="calculator_screen">
+            {{ isEnabled }}
+          </div>
         </div>
         <div class="buttons_container">
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" v-on:click="onOff()">
               <img src="@/assets/svg/off.svg" alt=""/>
             </button>
           </div>
@@ -107,7 +109,7 @@
               <img src="@/assets/svg/numbers/0.svg" alt=""/>
             </button>
           </div>
-          <div class="button_wrapper">
+          <div class="button_wrapper button_wrapper--dot">
             <button class="button">
               <img class="scale_0_5" src="@/assets/svg/dot.svg" alt=""/>
             </button>
@@ -130,7 +132,17 @@
 
 <script>
 export default {
-  name: "Calculator"
+  name: "Calculator",
+  data: function () {
+    return {
+      isEnabled: false,
+    };
+  },
+  methods: {
+    onOff: function () {
+      this.isEnabled = !this.isEnabled;
+    }
+  }
 }
 </script>
 
@@ -157,7 +169,11 @@ export default {
 .calculator_screen
   background: #DFE3D8
   height: 27px
+  padding-right: 4px
   border-radius: 3px
+  font-size: 13px
+  text-align: right
+  line-height: 27px
 
 .buttons_container
   display: grid
@@ -194,9 +210,14 @@ export default {
       grid-row: 5/7
       grid-column: 4
 
+    &--dot
+      .button
+        padding: 7px 2px 2px
+
     &--minus
       img
         transform: scale(0.4)
+
     &--multiply
       img
         transform: scale(0.7)
