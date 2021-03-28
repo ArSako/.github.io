@@ -4,7 +4,7 @@
       <div class="calculator_body">
         <div class="calculator_screen_wrapper">
           <div class="calculator_screen">
-            {{ isEnabled }}
+            {{ displayedValue }}
           </div>
         </div>
         <div class="buttons_container">
@@ -136,6 +136,7 @@ export default {
   data: function () {
     return {
       isEnabled: false,
+      displayedValue: `0`,
     };
   },
   methods: {
@@ -211,8 +212,8 @@ export default {
       grid-column: 4
 
     &--dot
-      .button
-        padding: 7px 2px 2px
+      > button
+        padding: 7px 1px 2px
 
     &--minus
       img
