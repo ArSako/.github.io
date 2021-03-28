@@ -232,6 +232,9 @@ export default {
 .button:hover
   background: linear-gradient(180deg, #4EA4DC 51.6%, #081925 131.2%)
 
+.button:active
+  background: linear-gradient(0deg, #18476B -2.9%, #2771AA 59.3%, #081925 148.8%)
+
 .scale_0_5
   transform: scale(0.5)
 </style>
