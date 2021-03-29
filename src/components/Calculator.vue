@@ -3,8 +3,11 @@
     <div class="calculator">
       <div class="calculator_body">
         <div class="calculator_screen_wrapper">
-          <div class="calculator_screen">
-            {{ displayedValue }}
+          <div class="calculator_screen" v-if="isEnabled">
+            <p class="calculator_screen_memory" v-if="memory">M</p>
+            <p class="calculator_screen_display">{{ display }}</p>
+          </div>
+          <div class="calculator_screen" v-else>
           </div>
         </div>
         <div class="buttons_container">
@@ -14,113 +17,113 @@
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click='sign'>
               <img src="@/assets/svg/plus_minus.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="sqrt">
               <img src="@/assets/svg/sqrt.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click='percent'>
               <img src="@/assets/svg/percent.svg" alt=""/>
 
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="mrc">
               <img src="@/assets/svg/mrc.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="m_minus">
               <img src="@/assets/svg/m_minus.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="m_plus">
               <img src="@/assets/svg/m_plus.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper button_wrapper--minus">
-            <button class="button">
+            <button class="button" @click="subtract">
               <img src="@/assets/svg/minus.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="append('7')">
               <img src="@/assets/svg/numbers/7.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="append('8')">
               <img src="@/assets/svg/numbers/8.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="append('9')">
               <img src="@/assets/svg/numbers/9.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper button_wrapper--multiply">
-            <button class="button">
+            <button class="button" @click="multiply">
               <img src="@/assets/svg/multiply.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="append('4')">
               <img src="@/assets/svg/numbers/4.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="append('5')">
               <img src="@/assets/svg/numbers/5.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="append('6')">
               <img src="@/assets/svg/numbers/6.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click='divide'>
               <img src="@/assets/svg/divide.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="append('1')">
               <img src="@/assets/svg/numbers/1.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="append('2')">
               <img src="@/assets/svg/numbers/2.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="append('3')">
               <img src="@/assets/svg/numbers/3.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="append('0')">
               <img src="@/assets/svg/numbers/0.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper button_wrapper--dot">
-            <button class="button">
+            <button class="button" @click="decimal">
               <img class="scale_0_5" src="@/assets/svg/dot.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper">
-            <button class="button">
+            <button class="button" @click="equal">
               <img class="scale_0_5" src="@/assets/svg/equals.svg" alt=""/>
             </button>
           </div>
           <div class="button_wrapper button_wrapper--plus ">
-            <button class="button">
+            <button class="button" @click="add">
               <img class="scale_0_5" src="@/assets/svg/plus.svg" alt=""/>
             </button>
           </div>
@@ -131,18 +134,117 @@
 </template>
 
 <script>
-//const utils = require('@/utils/helpers')
+const utils = require('@/utils/helpers')
+
 export default {
   name: "Calculator",
   data: function () {
     return {
       isEnabled: false,
-      displayedValue: `0`,
+      previous: null,
+      display: 0,
+      operator: null,
+      operatorClicked: false,
+      memory: 0,
     };
   },
   methods: {
     onOff: function () {
       this.isEnabled = !this.isEnabled;
+      this.clear();
+    },
+    clear() {
+      this.display = 0;
+    },
+    mrc() {
+      if (this.isEnabled) {
+        this.display = this.memory;
+        this.memory = 0;
+      }
+    },
+    m_plus() {
+      if (this.isEnabled) {
+        this.memory += this.display;
+      }
+    },
+    m_minus() {
+      if (this.isEnabled) {
+        this.memory -= this.display;
+      }
+    },
+    sign() {
+      if (this.isEnabled) {
+        this.display = utils.roundUp(
+            this.display < 0
+                ? (this.display = this.display - this.display * 2)
+                : (this.display = this.display - this.display * 2)
+        );
+      }
+    },
+    percent() {
+      if (this.isEnabled) {
+        this.display = utils.roundUp(this.display / 100);
+      }
+    },
+    sqrt() {
+      if (this.isEnabled) {
+        this.display = utils.roundUp(Math.sqrt(this.display));
+      }
+    },
+    append(number) {
+      if (this.isEnabled) {
+
+        if (this.operatorClicked === true) {
+          this.display = '';
+          this.operatorClicked = false;
+        }
+        this.display =
+            this.display === 0
+                ? (this.display = number)
+                : '' + this.display + number;
+      }
+    },
+    decimal() {
+      if (this.isEnabled) {
+        if (this.display.indexOf('.') === -1) {
+          this.append('.');
+        }
+      }
+    },
+    divide() {
+      if (this.isEnabled) {
+        this.operator = (a, b) => utils.roundUp(a / b);
+        this.previous = this.display;
+        this.operatorClicked = true;
+      }
+    },
+    multiply() {
+      if (this.isEnabled) {
+        this.operator = (a, b) => utils.roundUp(a * b);
+        this.previous = this.display;
+        this.operatorClicked = true;
+      }
+    },
+    subtract() {
+      if (this.isEnabled) {
+        this.operator = (a, b) => utils.roundUp(a - b);
+        this.previous = this.display;
+        this.operatorClicked = true;
+      }
+    },
+    add() {
+      if (this.isEnabled) {
+        this.operator = (a, b) => utils.roundUp(a + b);
+        this.previous = this.display;
+        this.operatorClicked = true;
+      }
+    },
+    equal() {
+      if (this.isEnabled) {
+        this.display = this.operator(Number(this.previous), Number(this.display));
+        this.previous = null;
+        this.operatorClicked = true;
+      }
     }
   }
 }
@@ -169,6 +271,7 @@ export default {
   background: linear-gradient(0deg, #18476B -2.9%, #2771AA 59.3%, #081925 148.8%)
 
 .calculator_screen
+  display: flex
   background: #DFE3D8
   height: 27px
   padding-right: 4px
@@ -176,6 +279,16 @@ export default {
   font-size: 13px
   text-align: right
   line-height: 27px
+  overflow-x: hidden
+  padding-left: 5px
+  align-items: center
+
+  &_memory
+    font-size: 3px
+    margin: 0
+
+  &_display
+    margin: 0 0 0 auto
 
 .buttons_container
   display: grid
