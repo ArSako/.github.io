@@ -155,6 +155,7 @@ export default {
     },
     clear() {
       this.display = 0;
+      this.memory = 0;
     },
     mrc() {
       if (this.isEnabled) {
@@ -164,12 +165,12 @@ export default {
     },
     m_plus() {
       if (this.isEnabled) {
-        this.memory += this.display;
+        this.memory += Number(this.display);
       }
     },
     m_minus() {
       if (this.isEnabled) {
-        this.memory -= this.display;
+        this.memory -= Number(this.display);
       }
     },
     sign() {
