@@ -207,8 +207,10 @@ export default {
     },
     decimal() {
       if (this.isEnabled) {
-        if (this.display.indexOf('.') === -1) {
-          this.append('.');
+        if (!this.operatorClicked) {
+          if (this.display.indexOf('.') === -1) {
+            this.append('.');
+          }
         }
       }
     },
