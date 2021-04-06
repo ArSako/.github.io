@@ -11,122 +11,14 @@
           </div>
         </div>
         <div class="buttons_container">
-          <div class="button_wrapper">
-            <button class="button" v-on:click="onOff()">
-              <img src="@/assets/svg/off.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click='sign'>
-              <img src="@/assets/svg/plus_minus.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="sqrt">
-              <img src="@/assets/svg/sqrt.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click='percent'>
-              <img src="@/assets/svg/percent.svg" alt=""/>
-
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="mrc">
-              <img src="@/assets/svg/mrc.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="m_minus">
-              <img src="@/assets/svg/m_minus.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="m_plus">
-              <img src="@/assets/svg/m_plus.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper button_wrapper--minus">
-            <button class="button" @click="subtract">
-              <img src="@/assets/svg/minus.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="append('7')">
-              <img src="@/assets/svg/numbers/7.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="append('8')">
-              <img src="@/assets/svg/numbers/8.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="append('9')">
-              <img src="@/assets/svg/numbers/9.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper button_wrapper--multiply">
-            <button class="button" @click="multiply">
-              <img src="@/assets/svg/multiply.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="append('4')">
-              <img src="@/assets/svg/numbers/4.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="append('5')">
-              <img src="@/assets/svg/numbers/5.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="append('6')">
-              <img src="@/assets/svg/numbers/6.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click='divide'>
-              <img src="@/assets/svg/divide.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="append('1')">
-              <img src="@/assets/svg/numbers/1.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="append('2')">
-              <img src="@/assets/svg/numbers/2.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="append('3')">
-              <img src="@/assets/svg/numbers/3.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="append('0')">
-              <img src="@/assets/svg/numbers/0.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper button_wrapper--dot">
-            <button class="button" @click="decimal">
-              <img class="scale_0_5" src="@/assets/svg/dot.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper">
-            <button class="button" @click="equal">
-              <img class="scale_0_5" src="@/assets/svg/equals.svg" alt=""/>
-            </button>
-          </div>
-          <div class="button_wrapper button_wrapper--plus ">
-            <button class="button" @click="add">
-              <img class="scale_0_5" src="@/assets/svg/plus.svg" alt=""/>
-            </button>
-          </div>
+          <Button v-for="button in buttons"
+                  v-bind:key="button.id"
+                  :action="button.action"
+                  :additional-class="button.additionalClass"
+                  :image="button.image"
+                  :additional-image-class="button.additionalImageClass"
+                  :number="button.number"
+          />
         </div>
       </div>
     </div>
@@ -134,12 +26,16 @@
 </template>
 
 <script>
-const utils = require('@/utils/helpers')
+import Button from "@/components/Button";
+
+const utils = require('@/utils/helpers');
 
 export default {
   name: "Calculator",
+  components: {Button},
   data: function () {
     return {
+      buttons: utils.getButtonsOptions.bind(this)(),
       isEnabled: false,
       previous: null,
       display: 0,
@@ -154,7 +50,7 @@ export default {
       this.clear();
     },
     clear() {
-      this.display = 0;
+      this.display = '0';
       this.memory = 0;
     },
     mrc() {
@@ -189,7 +85,7 @@ export default {
     },
     sqrt() {
       if (this.isEnabled) {
-        this.display = utils.roundUp(Math.sqrt(this.display));
+        if (this.display > 0) this.display = utils.roundUp(Math.sqrt(this.display));
       }
     },
     append(number) {
@@ -208,8 +104,9 @@ export default {
     decimal() {
       if (this.isEnabled) {
         if (!this.operatorClicked) {
+          // eslint-disable-next-line no-debugger
           if (this.display.indexOf('.') === -1) {
-            this.append('.');
+            this.display = `${this.display}.`
           }
         }
       }
@@ -300,57 +197,4 @@ export default {
   gap: 6px 4px
   padding: 8px 0 9px
 
-
-.button
-  display: block
-  border: none
-  outline: none
-  padding: 5px 3px 4px
-  width: 100%
-  height: 100%
-  border-radius: 1px
-  font-size: 4px
-  background: linear-gradient(0deg, #4EA4DC -416%, #2BAFDE 401%)
-  transition: .3s
-
-  &_wrapper
-    padding: 1px
-    background: linear-gradient(180deg, #18476B -5.2%, #2771AA 45.84%, #081925 119.3%)
-    border-radius: 2px
-
-    &:nth-child(1),
-    &:nth-child(2),
-    &:nth-child(3),
-    &:nth-child(4)
-      .button
-        padding: 3px 2px 2px
-
-    &--plus
-      grid-row: 5/7
-      grid-column: 4
-
-    &--dot
-      > button
-        padding: 7px 1px 2px
-
-    &--minus
-      img
-        transform: scale(0.4)
-
-    &--multiply
-      img
-        transform: scale(0.7)
-
-  > img
-    width: 100%
-    height: 100%
-
-.button:hover
-  background: linear-gradient(180deg, #4EA4DC 51.6%, #081925 131.2%)
-
-.button:active
-  background: linear-gradient(0deg, #18476B -2.9%, #2771AA 59.3%, #081925 148.8%)
-
-.scale_0_5
-  transform: scale(0.5)
 </style>
