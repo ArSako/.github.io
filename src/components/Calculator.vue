@@ -96,7 +96,7 @@ export default {
           this.operatorClicked = false;
         }
         this.display =
-            this.display === 0
+            this.display === '0'
                 ? (this.display = number)
                 : '' + this.display + number;
       }
