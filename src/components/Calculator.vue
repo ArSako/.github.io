@@ -38,10 +38,10 @@ export default {
       buttons: utils.getButtonsOptions.bind(this)(),
       isEnabled: false,
       previous: null,
-      display: 0,
+      display: '0',
       operator: null,
       operatorClicked: false,
-      memory: 0,
+      memory: '0',
     };
   },
   methods: {
@@ -51,12 +51,12 @@ export default {
     },
     clear() {
       this.display = '0';
-      this.memory = 0;
+      this.memory = '0';
     },
     mrc() {
       if (this.isEnabled) {
         this.display = this.memory;
-        this.memory = 0;
+        this.memory = '0';
       }
     },
     m_plus() {
@@ -104,7 +104,6 @@ export default {
     decimal() {
       if (this.isEnabled) {
         if (!this.operatorClicked) {
-          // eslint-disable-next-line no-debugger
           if (this.display.indexOf('.') === -1) {
             this.display = `${this.display}.`
           }
@@ -141,7 +140,7 @@ export default {
     },
     equal() {
       if (this.isEnabled) {
-        this.display = this.operator(Number(this.previous), Number(this.display));
+        this.display = utils.roundUp(this.operator(Number(this.previous), Number(this.display)));
         this.previous = null;
         this.operatorClicked = true;
       }

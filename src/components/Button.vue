@@ -1,7 +1,7 @@
 <template>
-  <div class="button_wrapper" :class=" additionalClass ">
-    <button class="button" @click="action(number)" >
-      <img :class="additionalImageClass" :src=" image " alt=""/>
+  <div class="button_wrapper" :class="additionalClass">
+    <button class="button" @click="action(number)">
+      <img :class="additionalImageClass" :src="image" alt=""/>
     </button>
   </div>
 </template>
