@@ -41,7 +41,7 @@ export default {
       display: '0',
       operator: null,
       operatorClicked: false,
-      memory: '0',
+      memory: 0,
     };
   },
   methods: {
@@ -51,12 +51,12 @@ export default {
     },
     clear() {
       this.display = '0';
-      this.memory = '0';
+      this.memory = 0;
     },
     mrc() {
       if (this.isEnabled) {
         this.display = this.memory;
-        this.memory = '0';
+        this.memory = 0;
       }
     },
     m_plus() {
