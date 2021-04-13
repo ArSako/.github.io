@@ -1,0 +1,14 @@
+version: '3.5'
+services:
+  mongodb:
+    image: 'bitnami/mongodb:4.2.11'
+    environment:
+      - MONGODB_USERNAME=calculator
+      - MONGODB_PASSWORD=calculator
+      - MONGODB_DATABASE=calculator
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_PASSWORD=calculator
+      - MONGODB_REPLICA_SET_KEY=replicasetkey
+    ports:
+      - 27017:27017
